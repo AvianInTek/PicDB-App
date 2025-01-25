@@ -1,45 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:picdb/models/color_palettes.dart';
 import 'package:picdb/models/onboarding_step.dart';
-//
-// class MultiSelectScreen extends StatelessWidget {
-//   final List<int> selectedOptions;
-//   final Function(int) onToggleOption;
-//
-//   const MultiSelectScreen({required this.selectedOptions, required this.onToggleOption, Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         Text('Select multiple options:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-//         SizedBox(height: 20),
-//         Wrap(
-//           spacing: 10,
-//           runSpacing: 10,
-//           children: List.generate(18, (index) {
-//             final isSelected = selectedOptions.contains(index);
-//             return GestureDetector(
-//               onTap: () => onToggleOption(index),
-//               child: Container(
-//                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-//                 decoration: BoxDecoration(
-//                   color: isSelected ? Colors.black : Colors.grey,
-//                   borderRadius: BorderRadius.circular(30),
-//                 ),
-//                 child: Text(
-//                   'Option ${index + 1}',
-//                   style: TextStyle(color: Colors.white),
-//                 ),
-//               ),
-//             );
-//           }),
-//         ),
-//       ],
-//     );
-//   }
-// }
+
 class MultiSelectScreen extends StatelessWidget {
   final List<int> selectedOptions;
   final Function(int) onToggleOption;
@@ -49,8 +12,8 @@ class MultiSelectScreen extends StatelessWidget {
     required this.selectedOptions,
     required this.onToggleOption,
     required this.color,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +22,10 @@ class MultiSelectScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.network(
-            "https://via.placeholder.com/350",
+          Lottie.asset(
+            './assets/lottie/onboarding_purpose.json',
             width: 350,
-            height: 350,
+            fit: BoxFit.fill,
           ),
           const SizedBox(height: 20),
           const Text(
@@ -79,7 +42,7 @@ class MultiSelectScreen extends StatelessWidget {
             spacing: 10,
             runSpacing: 10,
             alignment: WrapAlignment.center,
-            children: List.generate(OnboardingPurpose.OfUsing.length, (index) {
+            children: List.generate(OnboardingPurpose.ofUsing.length, (index) {
               final isSelected = selectedOptions.contains(index);
               return GestureDetector(
                 onTap: () => onToggleOption(index),
@@ -91,7 +54,7 @@ class MultiSelectScreen extends StatelessWidget {
                     border: Border.all(color: Colors.black),
                   ),
                   child: Text(
-                    OnboardingPurpose.OfUsing[index],
+                    OnboardingPurpose.ofUsing[index],
                     style: const TextStyle(color: Colors.black),
                   ),
                 ),

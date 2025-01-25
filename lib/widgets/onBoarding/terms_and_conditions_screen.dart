@@ -4,8 +4,7 @@ import 'package:picdb/models/onboarding_step.dart';
 class TermsAndConditionsScreen extends StatelessWidget {
   final bool termsAccepted;
   final ValueChanged<bool?> onAcceptTerms;
-  const TermsAndConditionsScreen({required this.termsAccepted, required this.onAcceptTerms, Key? key})
-      : super(key: key);
+  const TermsAndConditionsScreen({required this.termsAccepted, required this.onAcceptTerms, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +19,9 @@ class TermsAndConditionsScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Terms and Conditions',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -39,7 +38,7 @@ class TermsAndConditionsScreen extends StatelessWidget {
                         children: [
                           entry.key != "0" ? Text(
                             entry.key,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
                               color: Colors.black,
@@ -51,7 +50,7 @@ class TermsAndConditionsScreen extends StatelessWidget {
                           if (entry.value is String)
                             Text(
                               entry.value as String,  // cast to String
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.black54,
                                 height: 1.5,
@@ -65,12 +64,12 @@ class TermsAndConditionsScreen extends StatelessWidget {
                               children: (entry.value as List<String>).map(
                                     (item) => Row(
                                   children: [
-                                    Icon(Icons.brightness_1, size: 8, color: Colors.black),
-                                    SizedBox(width: 10),
+                                    const Icon(Icons.brightness_1, size: 8, color: Colors.black),
+                                    const SizedBox(width: 10),
                                     Expanded(
                                       child: Text(
                                         item,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14,
                                           color: Colors.black54,
                                           height: 1.5,
@@ -88,7 +87,7 @@ class TermsAndConditionsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               children: [
                 Checkbox(

@@ -1,48 +1,78 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../services/api_service.dart';
+import '../services/notify_service.dart';
+import '../widgets/check_connection.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  late SharedPreferences prefs;
   @override
   void initState() {
     super.initState();
-    // Wait for the animation to finish (e.g., after 3 seconds)
+    initPrefs();
     Future.delayed(const Duration(seconds: 8), () {
-      // Navigate to the home screen after the splash screen
       Navigator.pushReplacementNamed(context, '/onboarding');
+    });
+  }
+
+  void initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    String _recent_notify_id = prefs.getString('recent_notify') ?? '';
+    APIService().fetchNotify().then((notification) {
+      if (notification['success'] == true) {
+        if (notification['id'] != _recent_notify_id) {
+          prefs.setString('message_id', notification['id']);
+          NotifyService().showNotification(
+            title: notification['title'],
+            body: notification['body'],
+          );
+          prefs.setString('recent_notify', notification['id']);
+        }
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white, // Background color of splash screen
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Center(
-          child: Column (
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Lottie.asset(
-                './assets/lottie/welcome.json',  // Replace with your animation file path
-                // width: 200,  // Optional: Size of the animation
-                height: 150,  // Optional: Size of the animation
-                fit: BoxFit.fill,
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                "Made with ❤️ by Akkil",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
+    return ConnectivityWidget(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: Column (
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset("assets/logo/app_icon.png"),
+                const Text(
+                  "PicDB",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 50,
+                    color: Colors.black,
+                    fontFamily: 'Vonique',
+                  ),
                 ),
-              ),
-            ]
+                const Text(
+                  "Made with ❤️ by AvianInTek",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    fontFamily: 'Vonique',
+                  ),
+                ),
+              ]
+            ),
           ),
         ),
       ),

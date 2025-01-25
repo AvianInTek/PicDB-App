@@ -18,7 +18,7 @@ extension HexColor on Color {
 
 class Palette {
   static const String beige = "#F9C0AB";
-  static const String dark_beige = "#F0BB78";
+  static const String darkBeige = "#F0BB78";
   static const String peach = "#FBB4A5";
   static const String green = "#A7D477";
   static const String blue = "#B1F0F7";

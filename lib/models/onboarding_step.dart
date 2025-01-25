@@ -1,11 +1,11 @@
 
 class OnboardingStep {
-  final String image;
+  final String lottie;
   final String title;
   final String subtitle;
 
   OnboardingStep({
-    required this.image,
+    required this.lottie,
     required this.title,
     required this.subtitle,
   });
@@ -13,7 +13,7 @@ class OnboardingStep {
 
 
 class OnboardingHowTo {
-  static const List<String> FindUs = [
+  static const List<String> findUs = [
     'Google',
     'Facebook',
     'Twitter',
@@ -27,7 +27,7 @@ class OnboardingHowTo {
 
 
 class OnboardingPurpose {
-  static const List<String> OfUsing = [
+  static const List<String> ofUsing = [
     'Personal',
     'academic',
     'event',
@@ -42,7 +42,7 @@ class OnboardingPurpose {
 
 class OnboardingTnC {
   static const terms = {
-    "0": "Welcome to PicDB (“Service”), a freemium-based storage application that provides download and view links for image files under 20 MB, with optional encryption functionality. By using our Service, you (\“User\”) agree to these Terms and Conditions (\“Terms\”). If you do not agree, please discontinue using the Service.",
+    "0": "Welcome to PicDB (“Service”), a freemium-based storage application that provides download and view links for image files under 20 MB, with optional encryption functionality. By using our Service, you (“User”) agree to these Terms and Conditions (“Terms”). If you do not agree, please discontinue using the Service.",
     "Eligibility": "You must be at least 13 years old to use our Service. By using the Service, you represent and warrant that you are of legal age and have the capacity to agree to these Terms. Users under the age of 18 require parental or guardian consent.",
     // "Account Registration": "Information Accuracy: Users must provide accurate and complete registration details, including email address and password.",
     // "Account Security": "Users are responsible for maintaining the confidentiality of their login credentials. Notify us immediately of unauthorized use of your account.",
@@ -50,7 +50,7 @@ class OnboardingTnC {
     "File Restrictions": [
       "Uploaded files must adhere to the following:",
       "File type: Supported image formats (e.g., PNG, JPG).",
-      "File size: Must not exceed 20 MB.",
+      "File size: Must not exceed 65 MB.",
       "Prohibited content: Files containing illegal, obscene, infringing, or otherwise harmful material are strictly prohibited.",
     ],
     "User Conduct": [
@@ -65,7 +65,7 @@ class OnboardingTnC {
     ],
     "Intellectual Property": "The Service, including all content, designs, and software, is owned by or licensed to us. Users may not copy, modify, or distribute any part of the Service without prior consent.",
     "Payments and Refunds": [
-      "Refund Policy: Refunds are only provided as required by applicable laws in India or the United States. Pro-rata refunds are typically not offered for cancellations.",
+      "Refund Policy: Refunds are only provided as required by applicable laws in India or the United States. Pro-rate refunds are typically not offered for cancellations.",
     ],
     "Disclaimer of Warranties": "The Service is provided “as is” and “as available,” without warranties of any kind, either expressed or implied. We do not guarantee that the Service will be error-free or uninterrupted.",
     "Limitation of Liability": [

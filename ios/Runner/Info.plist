@@ -24,6 +24,27 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+        ...
+        <string>freecharge</string>
+        <string>gpay</string>
+        <string>in.fampay.app</string>
+        <string>lotza</string>
+        <string>mobikwik</string>
+        <string>paytm</string>
+        <string>phonepe</string>
+        <string>upi</string>
+        <string>upibillpay</string>
+        <string>whatsapp</string>
+        ...
+    </array>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>This app needs access to your photo library so you can pick images for your upload.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>This app needs access to your camera so you can take photos for your upload.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app needs access to your microphone so you can record videos with sound.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

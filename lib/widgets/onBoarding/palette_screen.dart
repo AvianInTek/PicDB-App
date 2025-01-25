@@ -5,7 +5,7 @@ class ColorScreen extends StatefulWidget {
   final String selectedColor;
   final Function(String) onSelectColor;
 
-  const ColorScreen({required this.selectedColor, required this.onSelectColor, Key? key}) : super(key: key);
+  const ColorScreen({required this.selectedColor, required this.onSelectColor, super.key});
 
   @override
   _ColorScreenState createState() => _ColorScreenState(selectedColor: selectedColor, onSelectColor: onSelectColor);
@@ -63,8 +63,8 @@ class _ColorScreenState extends State<ColorScreen> {
                   onTap: () => _onColorSelected(Palette.beige),
                 ),
                 ColorButton(
-                  color: Palette.dark_beige,
-                  onTap: () => _onColorSelected(Palette.dark_beige),
+                  color: Palette.darkBeige,
+                  onTap: () => _onColorSelected(Palette.darkBeige),
                 ),
                 ColorButton(
                   color: Palette.blue,
@@ -95,7 +95,7 @@ class ColorButton extends StatelessWidget {
   final String color;
   final VoidCallback onTap;
 
-  ColorButton({required this.color, required this.onTap});
+  const ColorButton({super.key, required this.color, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

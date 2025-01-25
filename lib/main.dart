@@ -1,21 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:picdb/screens/home.dart';
+import 'package:picdb/screens/dashboard.dart';
 import 'package:picdb/screens/onboarding.dart';
+import 'package:picdb/screens/payment.dart';
 import 'package:picdb/screens/splash.dart';
+import 'package:picdb/screens/upload.dart';
+import 'package:picdb/screens/welcome.dart';
+import 'package:picdb/services/api_service.dart';
+import 'package:picdb/services/internet_checker.dart';
+import 'package:picdb/services/notify_service.dart';
+import 'package:picdb/widgets/check_connection.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(PicDB());
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  NotifyService().initNotification();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  runApp(MyApp(prefs: prefs));
 }
 
-class PicDB extends StatelessWidget {
+class MyApp extends StatelessWidget {
+  final SharedPreferences prefs;
+  const MyApp({super.key, required this.prefs});
+
+  @override
+  StatelessElement createElement() {
+    // TODO: implement createElement
+    return super.createElement();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SplashScreen(),  // Replace with your home screen widget
-      // Alternatively, use:
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        useMaterial3: true,
+      ),
+      home:  const SplashScreen(),
       routes: {
-        "/home": (context) => HomeScreen(),
-        "/onboarding": (context) => OnboardingScreen(),
+        "/splash": (context) => const SplashScreen(),
+        "/onboarding": (context) => const OnboardingScreen(),
+        "/welcome": (context) => const WelcomeScreen(),
+        "/upload": (context) => const UploadImage(),
+        "/dashboard": (context) => const DashboardScreen(),
+        "/payment": (context) => const PaymentScreen()
       },
     );
   }

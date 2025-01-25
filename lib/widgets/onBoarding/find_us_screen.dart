@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:picdb/models/color_palettes.dart';
 import 'package:picdb/models/onboarding_step.dart';
 
@@ -16,10 +17,10 @@ class FindUsScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.network(
-            "https://via.placeholder.com/350",
-            width: 350,
-            height: 350,
+          Lottie.asset(
+            './assets/lottie/onboarding_found.json',
+            width: 300,
+            fit: BoxFit.fill,
           ),
           const SizedBox(height: 20),
           const Text(
@@ -37,18 +38,18 @@ class FindUsScreen extends StatelessWidget {
             spacing: 10, // Horizontal space between items
             runSpacing: 10, // Vertical space between rows
             children: [
-              for (int i = 0; i < OnboardingHowTo.FindUs.length; i++)
+              for (int i = 0; i < OnboardingHowTo.findUs.length; i++)
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: selectedFindUs == i
                         ? HexColor.fromHex(color)
                         : Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                    side: BorderSide(color: Colors.black),
+                    side: const BorderSide(color: Colors.black),
                   ),
                   onPressed: () => onSelectFindUs(i),
                   child: Text(
-                    OnboardingHowTo.FindUs[i],
+                    OnboardingHowTo.findUs[i],
                     style: const TextStyle(color: Colors.black),
                   ),
                 ),

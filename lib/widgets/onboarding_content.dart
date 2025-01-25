@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import '../models/onboarding_step.dart';
 
 class OnboardingContent extends StatelessWidget {
@@ -13,22 +14,22 @@ class OnboardingContent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.network(
-            step.image,
-            width: 350,
-            height: 350,
+          Lottie.asset(
+            step.lottie,
+            width: 300,
+            fit: BoxFit.fill,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Text(
             step.title,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             step.subtitle,
             textAlign: TextAlign.center,
