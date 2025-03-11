@@ -5,8 +5,6 @@ import 'package:picdb/screens/payment.dart';
 import 'package:picdb/screens/splash.dart';
 import 'package:picdb/screens/upload.dart';
 import 'package:picdb/screens/welcome.dart';
-import 'package:picdb/services/api_service.dart';
-import 'package:picdb/services/internet_checker.dart';
 import 'package:picdb/services/notify_service.dart';
 import 'package:picdb/widgets/check_connection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,7 +23,6 @@ class MyApp extends StatelessWidget {
 
   @override
   StatelessElement createElement() {
-    // TODO: implement createElement
     return super.createElement();
   }
 

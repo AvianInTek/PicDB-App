@@ -15,7 +15,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void initState() {
     super.initState();
     // Wait for the animation to finish (e.g., after 3 seconds)
-    Future.delayed(const Duration(seconds: 7), () {
+    Future.delayed(const Duration(seconds: 8), () {
       // Navigate to the home screen after the splash screen
       Navigator.pushReplacementNamed(context, '/upload');
     });

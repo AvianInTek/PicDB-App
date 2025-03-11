@@ -15,17 +15,40 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late SharedPreferences prefs;
+  late bool accepted;
+  late List<String> images;
   @override
   void initState() {
     super.initState();
     initPrefs();
-    Future.delayed(const Duration(seconds: 8), () {
-      Navigator.pushReplacementNamed(context, '/onboarding');
+    Future.delayed(const Duration(seconds: 2), () {
+      initAccepted();
+      initNotification();
     });
+    Future.delayed(const Duration(seconds: 8), () {
+      Navigator.pushReplacementNamed(context, accepted ? '/upload' : '/onboarding');
+    });
+  }
+
+  void initAccepted() async {
+    accepted = prefs.getBool("accepted") ?? false;
+    if (!accepted) {
+      await prefs.setBool("accepted", false);
+    }
+  }
+
+  void initImages() async {
+    images = prefs.getStringList("images") ?? [];
+    if (images.isEmpty) {
+      await prefs.setStringList("images", []);
+    }
   }
 
   void initPrefs() async {
     prefs = await SharedPreferences.getInstance();
+  }
+
+  void initNotification() {
     String _recent_notify_id = prefs.getString('recent_notify') ?? '';
     APIService().fetchNotify().then((notification) {
       if (notification['success'] == true) {

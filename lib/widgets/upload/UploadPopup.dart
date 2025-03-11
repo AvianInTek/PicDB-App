@@ -31,7 +31,7 @@ class _UploadPopupState extends State<UploadPopup> {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -43,14 +43,14 @@ class _UploadPopupState extends State<UploadPopup> {
                 // Title (Image Name and Type)
                 Row(
                   children: [
-                    Text(
-                      widget.imageName,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
+                    // Text(
+                    //   widget.imageName.length > 13 ? '${widget.imageName.substring(0, 10)}...' : widget.imageName,
+                    //   style: const TextStyle(
+                    //     fontSize: 18,
+                    //     fontWeight: FontWeight.bold,
+                    //   ),
+                    // ),
+                    // const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8,
@@ -70,6 +70,7 @@ class _UploadPopupState extends State<UploadPopup> {
                     ),
                   ],
                 ),
+                const SizedBox(width: 15),
                 // Close Button
                 IconButton(
                   onPressed: () {
@@ -80,7 +81,17 @@ class _UploadPopupState extends State<UploadPopup> {
               ],
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
+
+            Text(
+              "Name: ${widget.imageName}",
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 10),
 
             // Buttons (Download and View)
             Row(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:toastification/toastification.dart';
 
 void toaster(
@@ -19,7 +20,11 @@ void toaster(
     dragToClose: true, // Allow dragging to close
     closeOnClick: true,
     pauseOnHover: true,
-    icon: Image.asset(iconPath), // Use Image.asset for asset icons
+    icon: SvgPicture.asset(
+        iconPath,
+        width: 24,
+        height: 24,
+    ), // Use Image.asset for asset icons
     // Customize appearance if needed
     foregroundColor: Colors.white,
     backgroundColor: backgroundColor ??

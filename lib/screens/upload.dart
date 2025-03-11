@@ -1,11 +1,14 @@
 
 
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:picdb/widgets/toast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 import '../services/api_service.dart';
 import '../widgets/bottom_nav.dart';
@@ -21,13 +24,26 @@ class UploadImage extends StatefulWidget {
   _UploadImageState createState() => _UploadImageState();
 }
 
-class _UploadImageState extends State<UploadImage>
-    with SingleTickerProviderStateMixin {
+class _UploadImageState extends State<UploadImage> with SingleTickerProviderStateMixin {
   late AnimationController loadingController;
   final ImagePicker _picker = ImagePicker();
   File? _imageFile;
   List<dynamic> _results = [];
   bool lock = false;
+  late SharedPreferences prefs;
+  late List<dynamic> images;
+
+  void initImages() async {
+    var temp = prefs.getStringList("images") ?? [];
+    images = temp.map((image) => jsonDecode(image)).toList();
+    if (images.isEmpty) {
+      await prefs.setStringList("images", []);
+    }
+  }
+
+  void initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+  }
 
   void selectImage(result) {
     showDialog(
@@ -38,6 +54,13 @@ class _UploadImageState extends State<UploadImage>
         viewUrl: result['view'],
       ),
     );
+  }
+
+  String getFileSizeString({required int bytes, int decimals = 2}) {
+    const suffixes = ["B", "KB", "MB", "GB", "TB"];
+    var i = (bytes == 0) ? 0 : (log(bytes) / log(1024)).floor();
+    var size = bytes / pow(1024, i);
+    return '${size.toStringAsFixed(decimals)} ${suffixes[i]}';
   }
 
   Future<void> _selectImage() async {
@@ -56,6 +79,19 @@ class _UploadImageState extends State<UploadImage>
 
       // Upload the image
       try {
+        if (_imageFile!.lengthSync() > 65 * 1024 * 1024) {
+          toaster(
+            context,
+            message: "File size exceeds 65MB!",
+            type: ToastificationType.error,
+            iconPath: 'assets/icons/error.svg',
+            backgroundColor: Colors.red.shade700,
+          );
+          setState(() {
+            lock = false;
+          });
+          return;
+        }
         var result = await APIService().uploadFile(_imageFile!.path);
 
         if (result['success'] == true) {
@@ -63,18 +99,27 @@ class _UploadImageState extends State<UploadImage>
             _results.add(result);
             lock = false;
           });
+
+          images.add(jsonEncode({
+            "link": result['link'].toString(),
+            "title": result['title'].toString(),
+            "view": result['view'].toString(),
+            "size": getFileSizeString(bytes: _imageFile!.lengthSync()).toString()
+          }));
+          await prefs.setStringList("images", images.map((image) => image.toString()).toList());
+
           toaster(
             context,
             message: "Upload was successful!",
             type: ToastificationType.success,
-            iconPath: './assets/icons/success.svg'
+            iconPath: 'assets/icons/success.svg'
           );
         } else {
           toaster(
             context,
             message: result['message'],
             type: ToastificationType.error,
-            iconPath: './assets/icons/error.svg',
+            iconPath: 'assets/icons/error.svg',
             backgroundColor: Colors.red.shade700, // Optional custom background
           );
         }
@@ -83,7 +128,7 @@ class _UploadImageState extends State<UploadImage>
           context,
           message: 'An error occured!',
           type: ToastificationType.error,
-          iconPath: './assets/icons/error.svg',
+          iconPath: 'assets/icons/error.svg',
           backgroundColor: Colors.red.shade700, // Optional custom background
         );
       } finally {
@@ -94,13 +139,13 @@ class _UploadImageState extends State<UploadImage>
 
   @override
   void initState() {
-    loadingController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 10), // Adjust to match upload time
-    )..addListener(() {
+    loadingController = AnimationController( vsync: this, duration: const Duration(seconds: 10))..addListener(() {
       setState(() {});
     });
-
+    initPrefs();
+    Future.delayed(const Duration(seconds: 2), () {
+      initImages();
+    });
     super.initState();
   }
 
@@ -124,7 +169,7 @@ class _UploadImageState extends State<UploadImage>
                   const SizedBox(height: 40),
                   Lottie.asset(
                     './assets/lottie/upload.json',
-                    width: 300,
+                    width: 250,
                     fit: BoxFit.fill,
                   ),
                 ],
@@ -159,7 +204,7 @@ class _UploadImageState extends State<UploadImage>
                     color: Colors.blue.shade400,
                     child: Container(
                       width: double.infinity,
-                      height: 250,
+                      height: 200,
                       decoration: BoxDecoration(
                         color: Colors.blue.shade50.withOpacity(.3),
                         borderRadius: BorderRadius.circular(10),
@@ -293,8 +338,8 @@ class _UploadImageState extends State<UploadImage>
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8),
-                              child: Image.file(
-                                _imageFile!,
+                              child: Image.network(
+                                result['link'],
                                 width: 70,
                               ),
                             ),

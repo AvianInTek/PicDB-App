@@ -23,8 +23,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
   int selectedFindUs = 8;
-  String selectedColor = Palette.beige;
-  List<int> selectedOptions = [];
+  // String selectedColor = Palette.beige;
+  // List<int> selectedOptions = [];
   bool termsAccepted = false;
   String error = '';
   late SharedPreferences prefs;
@@ -46,20 +46,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
 
+  void _loadPreferences() async {
+    bool accepted = prefs.getBool("accepted") ?? false;
+    if (!accepted) {
+      await prefs.setBool("accepted", true);
+    }
+  }
+
   finish() {
-      if (_currentIndex < onboardingContent.length + 3) {
+      print("$_currentIndex\n${onboardingContent.length}\n$termsAccepted");
+      if (_currentIndex < onboardingContent.length) {
         _pageController.nextPage(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
         );
-      } else if (_currentIndex == onboardingContent.length + 3 && !termsAccepted) {
+      } else if (_currentIndex == onboardingContent.length && !termsAccepted) {
         error = 'Please accept the terms and conditions to continue.';
-      } else if (_currentIndex == onboardingContent.length + 3 && termsAccepted) {
-        if (selectedColor.isNotEmpty && selectedOptions.isNotEmpty) {
-          prefs.setString('color', selectedColor);
-
+      } else if (_currentIndex == onboardingContent.length && termsAccepted) {
+        // if (selectedColor.isNotEmpty && selectedOptions.isNotEmpty) {
+          _loadPreferences();
           Navigator.pushReplacementNamed(context, '/welcome');
-        }
+        // }
       }
   }
 
@@ -95,36 +102,36 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 children: [
                   ...onboardingContent.map((step) =>
                       OnboardingContent(step: step)),
-                  ColorScreen(
-                    selectedColor: selectedColor,
-                    onSelectColor: (option) {
-                      setState(() {
-                        selectedColor = option;
-                      });
-                    },
-                  ),
-                  FindUsScreen(
-                    selectedFindUs: selectedFindUs,
-                    color: selectedColor,
-                    onSelectFindUs: (option) {
-                      setState(() {
-                        selectedFindUs = option;
-                      });
-                    },
-                  ),
-                  MultiSelectScreen(
-                    color: selectedColor,
-                    selectedOptions: selectedOptions,
-                    onToggleOption: (option) {
-                      setState(() {
-                        if (selectedOptions.contains(option)) {
-                          selectedOptions.remove(option);
-                        } else {
-                          selectedOptions.add(option);
-                        }
-                      });
-                    },
-                  ),
+                  // ColorScreen(
+                  //   selectedColor: selectedColor,
+                  //   onSelectColor: (option) {
+                  //     setState(() {
+                  //       selectedColor = option;
+                  //     });
+                  //   },
+                  // ),
+                  // FindUsScreen(
+                  //   selectedFindUs: selectedFindUs,
+                  //   color: selectedColor,
+                  //   onSelectFindUs: (option) {
+                  //     setState(() {
+                  //       selectedFindUs = option;
+                  //     });
+                  //   },
+                  // ),
+                  // MultiSelectScreen(
+                  //   color: selectedColor,
+                  //   selectedOptions: selectedOptions,
+                  //   onToggleOption: (option) {
+                  //     setState(() {
+                  //       if (selectedOptions.contains(option)) {
+                  //         selectedOptions.remove(option);
+                  //       } else {
+                  //         selectedOptions.add(option);
+                  //       }
+                  //     });
+                  //   },
+                  // ),
                   TermsAndConditionsScreen(
                     termsAccepted: termsAccepted,
                     onAcceptTerms: (value) {
@@ -145,7 +152,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     onPressed: finish,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: _currentIndex ==
-                          onboardingContent.length + 3 && !termsAccepted
+                          onboardingContent.length && !termsAccepted
                           ? Colors.grey
                           : Colors.black,
                       padding: const EdgeInsets.symmetric(
@@ -155,7 +162,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ),
                     child: Text(
-                      _currentIndex == onboardingContent.length + 3
+                      _currentIndex == onboardingContent.length
                           ? 'Start'
                           : 'Next',
                       style: const TextStyle(color: Colors.white, fontSize: 16),
