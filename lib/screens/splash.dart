@@ -17,17 +17,28 @@ class _SplashScreenState extends State<SplashScreen> {
   late SharedPreferences prefs;
   late bool accepted;
   late List<String> images;
+  final NotifyService _notifyService = NotifyService();
+
   @override
   void initState() {
     super.initState();
     initPrefs();
+    _initializeNotifications();
     Future.delayed(const Duration(seconds: 2), () {
       initAccepted();
       initNotification();
     });
     Future.delayed(const Duration(seconds: 8), () {
-      Navigator.pushReplacementNamed(context, accepted ? '/upload' : '/onboarding');
+      if (accepted) {
+        Navigator.pushReplacementNamed(context, '/upload');
+      } else {
+        Navigator.pushReplacementNamed(context, '/onboarding');
+      }
     });
+  }
+
+  Future<void> _initializeNotifications() async {
+    await _notifyService.initNotification();
   }
 
   void initAccepted() async {
@@ -48,20 +59,26 @@ class _SplashScreenState extends State<SplashScreen> {
     prefs = await SharedPreferences.getInstance();
   }
 
-  void initNotification() {
-    String _recent_notify_id = prefs.getString('recent_notify') ?? '';
-    APIService().fetchNotify().then((notification) {
+  void initNotification() async {
+    String recentNotifyId = prefs.getString('recent_notify') ?? '';
+    try {
+      final notification = await APIService().fetchNotify();
       if (notification['success'] == true) {
-        if (notification['id'] != _recent_notify_id) {
-          prefs.setString('message_id', notification['id']);
-          NotifyService().showNotification(
-            title: notification['title'],
-            body: notification['body'],
-          );
-          prefs.setString('recent_notify', notification['id']);
+        final notifications = notification['notifications'] as List;
+        for (var notify in notifications) {
+          if (notify['_id'] != recentNotifyId) {
+            await _notifyService.showNotification(
+              title: notify['title'],
+              body: notify['body'],
+              id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+            );
+            await prefs.setString('recent_notify', notify['_id']);
+          }
         }
       }
-    });
+    } catch (e) {
+      print('Error showing notification: $e');
+    }
   }
 
   @override
@@ -86,7 +103,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ),
                 const Text(
-                  "Made with ❤️ by AvianInTek",
+                  "Made with ❤️ by Arkynox",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,

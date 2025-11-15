@@ -5,14 +5,18 @@ import 'package:picdb/screens/payment.dart';
 import 'package:picdb/screens/splash.dart';
 import 'package:picdb/screens/upload.dart';
 import 'package:picdb/screens/welcome.dart';
+import 'package:picdb/screens/group_chat_screen.dart';
 import 'package:picdb/services/notify_service.dart';
 import 'package:picdb/widgets/check_connection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
-  NotifyService().initNotification();
+
+  // Initialize notifications
+  final notifyService = NotifyService();
+  await notifyService.initNotification();
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   runApp(MyApp(prefs: prefs));
 }
@@ -33,14 +37,27 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
-      home:  const SplashScreen(),
+      home: const SplashScreen(),
       routes: {
         "/splash": (context) => const SplashScreen(),
         "/onboarding": (context) => const OnboardingScreen(),
         "/welcome": (context) => const WelcomeScreen(),
         "/upload": (context) => const UploadImage(),
         "/dashboard": (context) => const DashboardScreen(),
-        "/payment": (context) => const PaymentScreen()
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == GroupChatScreen.routeName) {
+          final args = settings.arguments as GroupChatArgs;
+          return MaterialPageRoute(
+            builder: (context) => GroupChatScreen(args: args),
+          );
+        }
+        return null;
+      },
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (context) => const SplashScreen(),
+        );
       },
     );
   }

@@ -1,4 +1,4 @@
-package `in`.akkilmg.picdb
+package com.arkynox.picdb
 
 import io.flutter.embedding.android.FlutterActivity
 

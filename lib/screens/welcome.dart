@@ -40,7 +40,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ),
                   const SizedBox(height: 20),
                   const Text(
-                    "Made with ❤️ by AvianInTek",
+                    "Made with ❤️ by Arkynox",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,

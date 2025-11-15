@@ -84,7 +84,8 @@ class _UploadPopupState extends State<UploadPopup> {
             const SizedBox(height: 10),
 
             Text(
-              "Name: ${widget.imageName}",
+              // "Name: ${widget.imageName}",
+              "Name: ${widget.imageName.length > 18 ? '${widget.imageName.substring(0, 20)}...' : widget.imageName}",
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
@@ -208,7 +209,7 @@ class _UploadPopupState extends State<UploadPopup> {
             ],
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 8),
         Center(
           child: QrImageView(
             data: widget.imageUrl,
